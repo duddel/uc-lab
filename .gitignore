@@ -1,1 +1,10 @@
 build_*/
+
+# avr
+.dep
+*.eep
+*.elf
+*.hex
+*.lst
+*.map
+*.o

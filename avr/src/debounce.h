@@ -1,6 +1,5 @@
-MIT License
-
-Copyright (c) 2023-2025 Alexander Scholz
+/*
+Copyright (c) 2024 Alexander Scholz
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +18,23 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+#ifndef DEBOUNCE_H
+#define DEBOUNCE_H
+
+#include <stdint.h>
+
+typedef struct
+{
+    uint8_t state;
+    uint8_t last_state;
+    uint8_t state_changed;
+    uint32_t delay_time;
+    uint32_t last_change_time;
+} debouncer;
+
+void debounce_init(debouncer *deb);
+
+void debounce_update(uint8_t state, debouncer *deb);
+
+#endif

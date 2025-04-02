@@ -1,0 +1,21 @@
+name: build avr
+on:
+  push:
+    paths:
+      - "avr/"
+      - ".github/workflows/build_avr.yml"
+
+jobs:
+  build_avr:
+    strategy:
+      matrix:
+        example_dir: ["blink", "timemeas", "togglebutton", "sleep_pci", "states", "ws2812b", "moodlight", "pwm", "hot_wire", "choreo"]
+    name: Build AVR examples
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build Docker image
+        run: cd avr && docker build -t avrlab .
+      - name: Build example
+        run: cd avr && docker run --rm -v $(pwd):/code avrlab /bin/bash -c "cd src/${{ matrix.example_dir }} && make hex"

@@ -1,6 +1,5 @@
-MIT License
-
-Copyright (c) 2023-2025 Alexander Scholz
+/*
+Copyright (c) 2024 Alexander Scholz
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +18,13 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+#ifndef WS2812B_H
+#define WS2812B_H
+
+#include <stdint.h>
+
+// Sends a single byte (color value) via ws2812b protocol
+void ws2812b_bang_byte(const uint8_t portb_pin, const uint8_t data);
+
+#endif

@@ -1,0 +1,21 @@
+name: build rpico
+on:
+  push:
+    paths:
+      - "avr/"
+      - ".github/workflows/build_rpico.yml"
+
+jobs:
+  build_pico:
+    strategy:
+      matrix:
+        pico_board: ["pico", "pico_w"]
+    name: Build Pico
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build Docker image
+        run: cd rpico && docker build -t rpico .
+      - name: Build project
+        run: cd rpico && docker run --rm -v $(pwd):/code -w /code rpico /bin/bash ./build.bash ${{ matrix.pico_board }}
