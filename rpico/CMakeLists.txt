@@ -73,3 +73,19 @@ target_link_libraries(ws2812
 )
 
 pico_add_extra_outputs(ws2812)
+
+#
+# usb serial example
+#
+# add_executable(serial
+#   ${CMAKE_CURRENT_SOURCE_DIR}/src/main_serial.c
+# )
+
+# target_link_libraries(serial
+#   pico_stdlib
+# )
+
+# pico_enable_stdio_usb(serial 1)
+# pico_enable_stdio_uart(serial 0)
+
+# pico_add_extra_outputs(serial)
