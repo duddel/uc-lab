@@ -5,8 +5,8 @@
 
 This repository contains
 
--   Template and Examples in `C/C++` for the :arrow_down: [Raspberry Pi Pico](#raspberry-pi-pico-lab) using the official SDK, via Docker
--   Template and Examples in `C` for :arrow_down: [AVR Microcontrollers](#avr-lab), optionally built via Docker
+-   Template and Examples in `C/C++` for the [:arrow_down: Raspberry Pi Pico](#raspberry-pi-pico-lab) using the official SDK, via Docker
+-   Template and Examples in `C` for [:arrow_down: AVR Microcontrollers](#avr-lab), optionally built via Docker
 
 ## License
 
@@ -30,11 +30,11 @@ The source code in this repository is licensed under the [MIT license](LICENSE.t
 
 ## Features
 
-| Feature  | Example                                    | Info                        | Tested on boards |
-| -------- | ------------------------------------------ | --------------------------- | ---------------- |
-| blink    | [src/main_blink.c](src/main_blink.c)       | Hello world blink example   | `pico`, `pico_w` |
-| debounce | [src/main_debounce.c](src/main_debounce.c) | Button debouncer            | `pico`, `pico_w` |
-| ws2812   | [src/main_ws2812.c](src/main_ws2812.c)     | Basic ws2812 light controls | `pico`, `pico_w` |
+| Feature  | Example                                                | Info                        | Tested on boards |
+| -------- | ------------------------------------------------------ | --------------------------- | ---------------- |
+| blink    | [rpico/src/main_blink.c](rpico/src/main_blink.c)       | Hello world blink example   | `pico`, `pico_w` |
+| debounce | [rpico/src/main_debounce.c](rpico/src/main_debounce.c) | Button debouncer            | `pico`, `pico_w` |
+| ws2812   | [rpico/src/main_ws2812.c](rpico/src/main_ws2812.c)     | Basic ws2812 light controls | `pico`, `pico_w` |
 
 ## Kick-start
 
@@ -43,12 +43,15 @@ A Docker installation and basic Docker knowledge is required.
 1.  Build the Docker image:
 
 ```bash
+cd rpico
 docker build -t rpico .
 ```
 
 2.  Build the examples via Docker with one of these commands. Replace `<pico_board>` with the desired board to build for, such as `pico` or `pico_w`.
 
 ```bash
+cd rpico
+
 # Bash
 docker run --rm -v $(pwd):/code -w /code rpico /bin/bash ./build.bash <pico_board>
 
@@ -74,6 +77,8 @@ The above should suffice for simple building of the examples. Here are some more
 **More control over the build command:**
 
 ```bash
+cd rpico
+
 # Bash
 docker run --rm -v $(pwd):/code -w /code rpico /bin/bash -c "mkdir -p build && cd build && cmake -DPICO_BOARD=pico .. && make"
 
@@ -84,6 +89,8 @@ docker run --rm -v ${PWD}:/code -w /code rpico /bin/bash -c "mkdir -p build && c
 **Start Docker container with an interactive shell:**
 
 ```bash
+cd rpico
+
 # Bash
 docker run --rm -it -v $(pwd):/code rpico
 
@@ -103,28 +110,28 @@ docker run --rm -it -v ${PWD}:/code rpico
 
 Example projects, roughly sorted by complexity.
 
-| Example      | Code                                               | Info                                                     |
-| ------------ | -------------------------------------------------- | -------------------------------------------------------- |
-| blink        | [src/blink/main.c](src/blink/main.c)               | Hello world blink example                                |
-| timemeas     | [src/timemeas/main.c](src/timemeas/main.c)         | No delay blink example using time measure                |
-| togglebutton | [src/togglebutton/main.c](src/togglebutton/main.c) | Debounced button input                                   |
-| states       | [src/states/main.c](src/states/main.c)             | Simple state logic with debounced button input           |
-| choreo       | [src/choreo/main.c](src/choreo/main.c)             | Concurrent pin output sequences                          |
-| sleep_pci    | [src/sleep_pci/main.c](src/sleep_pci/main.c)       | Sleep and wake-up via pin change interrupt               |
-| pwm          | [src/pwm/main.c](src/pwm/main.c)                   | PWM signal with Timer/Counter0,1                         |
-| ws2812b      | [src/ws2812b/main.c](src/ws2812b/main.c)           | WS2812B control via Bit-Banging                          |
-| moodlight    | [src/moodlight/main.c](src/moodlight/main.c)       | Multiple WS2812B light sequences, switchable, auto-sleep |
-| hot_wire     | [src/hot_wire/main.c](src/hot_wire/main.c)         | Simple hot wire game                                     |
+| Example      | Code                                                       | Info                                                     |
+| ------------ | ---------------------------------------------------------- | -------------------------------------------------------- |
+| blink        | [avr/src/blink/main.c](avr/src/blink/main.c)               | Hello world blink example                                |
+| timemeas     | [avr/src/timemeas/main.c](avr/src/timemeas/main.c)         | No delay blink example using time measure                |
+| togglebutton | [avr/src/togglebutton/main.c](avr/src/togglebutton/main.c) | Debounced button input                                   |
+| states       | [avr/src/states/main.c](avr/src/states/main.c)             | Simple state logic with debounced button input           |
+| choreo       | [avr/src/choreo/main.c](avr/src/choreo/main.c)             | Concurrent pin output sequences                          |
+| sleep_pci    | [avr/src/sleep_pci/main.c](avr/src/sleep_pci/main.c)       | Sleep and wake-up via pin change interrupt               |
+| pwm          | [avr/src/pwm/main.c](avr/src/pwm/main.c)                   | PWM signal with Timer/Counter0,1                         |
+| ws2812b      | [avr/src/ws2812b/main.c](avr/src/ws2812b/main.c)           | WS2812B control via Bit-Banging                          |
+| moodlight    | [avr/src/moodlight/main.c](avr/src/moodlight/main.c)       | Multiple WS2812B light sequences, switchable, auto-sleep |
+| hot_wire     | [avr/src/hot_wire/main.c](avr/src/hot_wire/main.c)         | Simple hot wire game                                     |
 
 Helper modules.
 
-| Module   | API                              | Code                             | Info                                                 |
-| -------- | -------------------------------- | -------------------------------- | ---------------------------------------------------- |
-| choreo   | [src/choreo.h](src/choreo.h)     | [src/choreo.c](src/choreo.c)     | Time-uncritical concurrent execution of simple tasks |
-| debounce | [src/debounce.h](src/debounce.h) | [src/debounce.c](src/debounce.c) | Button debouncer                                     |
-| timemeas | [src/timemeas.h](src/timemeas.h) | [src/timemeas.c](src/timemeas.c) | Time measurement using Timer/Counter0                |
-| ws2812b  | [src/ws2812b.h](src/ws2812b.h)   | [src/ws2812b.c](src/ws2812b.c)   | WS2812B interface                                    |
-| zzz      | [src/zzz.h](src/zzz.h)           | [src/zzz.c](src/zzz.c)           | Power down sleep mode                                |
+| Module   | API                                      | Code                                     | Info                                                 |
+| -------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------------------- |
+| choreo   | [avr/src/choreo.h](avr/src/choreo.h)     | [avr/src/choreo.c](avr/src/choreo.c)     | Time-uncritical concurrent execution of simple tasks |
+| debounce | [avr/src/debounce.h](avr/src/debounce.h) | [avr/src/debounce.c](avr/src/debounce.c) | Button debouncer                                     |
+| timemeas | [avr/src/timemeas.h](avr/src/timemeas.h) | [avr/src/timemeas.c](avr/src/timemeas.c) | Time measurement using Timer/Counter0                |
+| ws2812b  | [avr/src/ws2812b.h](avr/src/ws2812b.h)   | [avr/src/ws2812b.c](avr/src/ws2812b.c)   | WS2812B interface                                    |
+| zzz      | [avr/src/zzz.h](avr/src/zzz.h)           | [avr/src/zzz.c](avr/src/zzz.c)           | Power down sleep mode                                |
 
 ## Set up Docker
 
@@ -133,6 +140,7 @@ A Docker installation and basic Docker knowledge is required. Run these commands
 First, build the Docker image (once).
 
 ```bash
+cd avr
 docker build -t avrlab .
 ```
 
@@ -141,6 +149,8 @@ docker build -t avrlab .
 This builds a project in an auto-removing container, from the image created above. **Recommended in most cases.**
 
 ```bash
+cd avr
+
 # Bash
 docker run --rm -v $(pwd):/code avrlab /bin/bash -c "cd src/blink && make hex"
 
@@ -153,6 +163,8 @@ docker run --rm -v ${PWD}:/code avrlab /bin/bash -c "cd src/blink && make hex"
 Start container with interactive shell.
 
 ```bash
+cd avr
+
 # Option 1: Auto-removing container after usage
 # Bash
 docker run --rm -it -v $(pwd):/code avrlab
