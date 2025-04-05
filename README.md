@@ -23,8 +23,8 @@ The source code in this repository is licensed under the [MIT license](LICENSE.t
 
 # Raspberry Pi Pico Lab
 
--   The official SDK is cloned into the Docker image, see [Dockerfile](Dockerfile) for details
--   Check out the examples in [src/](src/)
+-   The official SDK is cloned into the Docker image, see [rpico/Dockerfile](rpico/Dockerfile) for details
+-   Check out the examples in [rpico/src/](rpico/src/)
 -   Utilize existing code for an own project or start with a basic example
 -   Having Docker in place, the projects can be built with a single command
 
@@ -68,10 +68,10 @@ The above should suffice for simple building of the examples. Here are some more
 **Use this repository as a template for an own project:**
 
 -   Fork or download this repository
--   Delete unneeded source files from [src/](src/)
+-   Delete unneeded source files from [rpico/src/](rpico/src/)
     -   e.g. just keep `main_blink.c` to start with
--   Delete unneeded build targets from [CMakeLists.txt](CMakeLists.txt)
-    -   Each `main_[...].c/.cpp` file in [src/](src/) has a corresponding block in [CMakeLists.txt](CMakeLists.txt) defining an executable target
+-   Delete unneeded build targets from [rpico/CMakeLists.txt](rpico/CMakeLists.txt)
+    -   Each `main_[...].c/.cpp` file in [rpico/src/](rpico/src/) has a corresponding block in [rpico/CMakeLists.txt](rpico/CMakeLists.txt) defining an executable target
     -   e.g. just keep the block starting with `add_executable(blink ...`
 
 **More control over the build command:**
@@ -100,9 +100,9 @@ docker run --rm -it -v ${PWD}:/code rpico
 
 # AVR Lab
 
--   Using default `gcc-avr` and `avr-libc`, see [Dockerfile](Dockerfile) for details
+-   Using default `gcc-avr` and `avr-libc`, see [avr/Dockerfile](avr/Dockerfile) for details
 -   Mainly written for `ATtiny85`, if not stated otherwise
--   Check out the examples in [src/](src/)
+-   Check out the examples in [avr/src/](avr/src/)
 -   Utilize existing code for an own project or start with a basic example
 -   Having Docker in place, the projects can be built with a single command
 
