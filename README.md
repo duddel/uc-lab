@@ -5,6 +5,7 @@
 
 This repository contains
 
+-   A [Dockerfile](Dockerfile) to [:arrow_down: create an image](#docker-image) that can build all projects in this repository
 -   Template and Examples in `C/C++` for the [:arrow_down: Raspberry Pi Pico](#raspberry-pi-pico-lab) using the official SDK, via Docker
 -   Template and Examples in `C` for [:arrow_down: AVR Microcontrollers](#avr-lab), optionally built via Docker
 
@@ -21,14 +22,45 @@ The source code in this repository is licensed under the [MIT license](LICENSE.t
     -   license: see [avr/Makefile_template](avr/Makefile_template)
     -   each AVR example project in [avr/src/](avr/src/) contains a `Makefile`, which is an adjusted copy of [avr/Makefile_template](avr/Makefile_template)
 
-# Raspberry Pi Pico Lab
+## Docker Image
 
--   The official SDK is cloned into the Docker image, see [rpico/Dockerfile](rpico/Dockerfile) for details
+All projects in this repository can be built with the Docker image, generated from [Dockerfile](Dockerfile).
+
+Build the Docker image:
+
+```bash
+docker build -t uc-lab .
+```
+
+_Optionally_, you can start a Docker container with an interactive shell to work in directly. But it is **recommended to skip this step** and use the simple build commands, described for each platform below.
+
+```bash
+# Option 1: Use a container that deletes itself after usage (`--rm`)
+# Bash
+docker run --rm -it -v $(pwd):/code uc-lab
+
+# Powershell
+docker run --rm -it -v ${PWD}:/code uc-lab
+
+# Option 2: Create a named container that can be reused
+# Bash
+docker run -it -v $(pwd):/code --name uclab_01 uc-lab
+
+# Powershell
+docker run -it -v ${PWD}:/code --name uclab_01 avrlab
+
+# For option 2, start the container like this
+docker start -i uclab_01
+```
+
+## Raspberry Pi Pico Lab
+
+-   The official SDK is cloned into the Docker image, see [Dockerfile](Dockerfile) for details
 -   Check out the examples in [rpico/src/](rpico/src/)
 -   Utilize existing code for an own project or start with a basic example
 -   Having Docker in place, the projects can be built with a single command
 
-## Features
+### Features
 
 | Feature  | Example                                                | Info                        | Tested on boards |
 | -------- | ------------------------------------------------------ | --------------------------- | ---------------- |
@@ -36,32 +68,30 @@ The source code in this repository is licensed under the [MIT license](LICENSE.t
 | debounce | [rpico/src/main_debounce.c](rpico/src/main_debounce.c) | Button debouncer            | `pico`, `pico_w` |
 | ws2812   | [rpico/src/main_ws2812.c](rpico/src/main_ws2812.c)     | Basic ws2812 light controls | `pico`, `pico_w` |
 
-## Kick-start
+### Build
 
-A Docker installation and basic Docker knowledge is required.
-
-1.  Build the Docker image:
-
-```bash
-cd rpico
-docker build -t rpico .
-```
-
-2.  Build the examples via Docker with one of these commands. Replace `<pico_board>` with the desired board to build for, such as `pico` or `pico_w`.
+This builds the examples in an auto-removing container, from the image created [above](#docker-image). Replace `<pico_board>` with the desired board to build for, such as `pico` or `pico_w`. **Recommended in most cases.**
 
 ```bash
 cd rpico
 
 # Bash
-docker run --rm -v $(pwd):/code -w /code rpico /bin/bash ./build.bash <pico_board>
+docker run --rm -v $(pwd):/code uc-lab /bin/bash ./build.bash <pico_board>
 
 # Powershell
-docker run --rm -v ${PWD}:/code -w /code rpico /bin/bash ./build.bash <pico_board>
+docker run --rm -v ${PWD}:/code uc-lab /bin/bash ./build.bash <pico_board>
 ```
 
-3.  Drop any UF2 binary from `build_<pico_board>/` directory onto the Pico following the official documentation.
+Optionally, append the name of a build traget to only build a single example.
 
-## Advanced usage
+```bash
+# Example: Build only the blink example for pico board
+docker run --rm -v ${PWD}:/code uc-lab /bin/bash ./build.bash pico blink
+```
+
+Now, drop any UF2 binary from `build_<pico_board>/` directory onto the Pico following the official documentation.
+
+### Advanced usage
 
 The above should suffice for simple building of the examples. Here are some more things to do.
 
@@ -80,33 +110,21 @@ The above should suffice for simple building of the examples. Here are some more
 cd rpico
 
 # Bash
-docker run --rm -v $(pwd):/code -w /code rpico /bin/bash -c "mkdir -p build && cd build && cmake -DPICO_BOARD=pico .. && make"
+docker run --rm -v $(pwd):/code uc-lab /bin/bash -c "mkdir -p build && cd build && cmake -DPICO_BOARD=pico .. && make"
 
 # Powershell
-docker run --rm -v ${PWD}:/code -w /code rpico /bin/bash -c "mkdir -p build && cd build && cmake -DPICO_BOARD=pico .. && make"
+docker run --rm -v ${PWD}:/code uc-lab /bin/bash -c "mkdir -p build && cd build && cmake -DPICO_BOARD=pico .. && make"
 ```
 
-**Start Docker container with an interactive shell:**
+## AVR Lab
 
-```bash
-cd rpico
-
-# Bash
-docker run --rm -it -v $(pwd):/code rpico
-
-# Powershell
-docker run --rm -it -v ${PWD}:/code rpico
-```
-
-# AVR Lab
-
--   Using default `gcc-avr` and `avr-libc`, see [avr/Dockerfile](avr/Dockerfile) for details
+-   Using default `gcc-avr` and `avr-libc`, see [Dockerfile](Dockerfile) for details
 -   Mainly written for `ATtiny85`, if not stated otherwise
 -   Check out the examples in [avr/src/](avr/src/)
 -   Utilize existing code for an own project or start with a basic example
 -   Having Docker in place, the projects can be built with a single command
 
-## Examples and Helper Modules
+### Examples and Helper Modules
 
 Example projects, roughly sorted by complexity.
 
@@ -133,75 +151,32 @@ Helper modules.
 | ws2812b  | [avr/src/ws2812b.h](avr/src/ws2812b.h)   | [avr/src/ws2812b.c](avr/src/ws2812b.c)   | WS2812B interface                                    |
 | zzz      | [avr/src/zzz.h](avr/src/zzz.h)           | [avr/src/zzz.c](avr/src/zzz.c)           | Power down sleep mode                                |
 
-## Set up Docker
+### Build
 
-A Docker installation and basic Docker knowledge is required. Run these commands in the repository root.
-
-First, build the Docker image (once).
-
-```bash
-cd avr
-docker build -t avrlab .
-```
-
-### Build a project
-
-This builds a project in an auto-removing container, from the image created above. **Recommended in most cases.**
+This builds a project in an auto-removing container, from the image created [above](#docker-image). **Recommended in most cases.**
 
 ```bash
 cd avr
 
 # Bash
-docker run --rm -v $(pwd):/code avrlab /bin/bash -c "cd src/blink && make hex"
+docker run --rm -v $(pwd):/code uc-lab /bin/bash -c "cd src/blink && make hex"
 
 # Powershell
-docker run --rm -v ${PWD}:/code avrlab /bin/bash -c "cd src/blink && make hex"
+docker run --rm -v ${PWD}:/code uc-lab /bin/bash -c "cd src/blink && make hex"
 ```
 
-### Advanced (more Control over Container)
-
-Start container with interactive shell.
-
-```bash
-cd avr
-
-# Option 1: Auto-removing container after usage
-# Bash
-docker run --rm -it -v $(pwd):/code avrlab
-
-# Powershell
-docker run --rm -it -v ${PWD}:/code avrlab
-
-# Option 2: Named container
-# Bash
-docker run -it -v $(pwd):/code --name avrlab_01 avrlab
-
-# Powershell
-docker run -it -v ${PWD}:/code --name avrlab_01 avrlab
-
-# For option 2, start container like this
-docker start -i avrlab_01
-```
-
-Build a project.
-
-```bash
-cd src/blink
-make hex
-```
-
-## avrdude Example Commands
+### avrdude Example Commands
 
 -   Install `avrdude` on host (recommended)
 -   Use `stk500v1` compatible ISP (e.g. using Arduino with ISP example sketch)
 
-### Program
+#### Program
 
 ```bash
 avrdude -p attiny85 -P com3 -c stk500v1 -b 19200 -U flash:w:src/blink/main.hex
 ```
 
-### Fuses
+#### Fuses
 
 >   **Attention:** inappropriate fuse settings can brick the microcontroller, check **[1]**
 
