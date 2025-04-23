@@ -21,18 +21,18 @@ SOFTWARE.
 */
 #include "pico/stdlib.h"
 
-#ifdef RASPBERRYPI_PICO_W
+#if defined(RASPBERRYPI_PICO_W) || defined(RASPBERRYPI_PICO2_W)
 #include "pico/cyw43_arch.h"
 #endif
 
-#ifdef PICO_DEFAULT_WS2812_PIN
+#if defined(PICO_DEFAULT_WS2812_PIN)
 #include "ws2812.pio.h" // generated from ws2812.pio
 #endif
 
 int main()
 {
 // WS2812 on-board LED
-#ifdef PICO_DEFAULT_WS2812_PIN
+#if defined(PICO_DEFAULT_WS2812_PIN)
     const uint data_pin = PICO_DEFAULT_WS2812_PIN; // TX data pin index
     const PIO pio_idx = pio0;                      // PIO instance
     const int pio_sm = 0;                          // PIO state machine index
@@ -48,9 +48,8 @@ int main()
         pio_sm_put_blocking(pio_idx, pio_sm, 0x00000000);
         sleep_ms(750);
     }
-#else
 // Simple on-board LED
-#ifdef RASPBERRYPI_PICO_W
+#elif defined(RASPBERRYPI_PICO_W) || defined(RASPBERRYPI_PICO2_W)
     if (cyw43_arch_init())
     {
         return -1;
@@ -74,6 +73,5 @@ int main()
         gpio_put(PICO_DEFAULT_LED_PIN, 0);
         sleep_ms(750);
     }
-#endif
 #endif
 }

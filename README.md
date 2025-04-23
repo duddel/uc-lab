@@ -62,11 +62,13 @@ docker start -i uclab_01
 
 ### Features
 
-| Feature  | Example                                                | Info                        | Tested on boards                          |
-| -------- | ------------------------------------------------------ | --------------------------- | ----------------------------------------- |
-| blink    | [rpico/src/main_blink.c](rpico/src/main_blink.c)       | Hello world blink example   | `pico`, `pico_w`, `waveshare_rp2350_zero` |
-| debounce | [rpico/src/main_debounce.c](rpico/src/main_debounce.c) | Button debouncer            | `pico`, `pico_w`, `waveshare_rp2350_zero` |
-| ws2812   | [rpico/src/main_ws2812.c](rpico/src/main_ws2812.c)     | Basic ws2812 light controls | `pico`, `pico_w`, `waveshare_rp2350_zero` |
+| Feature  | Example                                                | Info                        |
+| -------- | ------------------------------------------------------ | --------------------------- |
+| blink    | [rpico/src/main_blink.c](rpico/src/main_blink.c)       | Hello world blink example   |
+| debounce | [rpico/src/main_debounce.c](rpico/src/main_debounce.c) | Button debouncer            |
+| ws2812   | [rpico/src/main_ws2812.c](rpico/src/main_ws2812.c)     | Basic ws2812 light controls |
+
+All examples tested on boards: `pico`, `pico_w`, `pico2`, `pico2_w`, `waveshare_rp2350_zero`
 
 ### Build
 
