@@ -4,6 +4,7 @@ on:
     paths:
       - "avr/"
       - ".github/workflows/build_avr.yml"
+      - "Dockerfile"
 
 jobs:
   build_avr:
@@ -16,6 +17,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build Docker image
-        run: cd avr && docker build -t avrlab .
+        run: docker build -t uc-lab .
       - name: Build example
-        run: cd avr && docker run --rm -v $(pwd):/code avrlab /bin/bash -c "cd src/${{ matrix.example_dir }} && make hex"
+        run: cd avr && docker run --rm -v $(pwd):/code uc-lab /bin/bash -c "cd src/${{ matrix.example_dir }} && make hex"
