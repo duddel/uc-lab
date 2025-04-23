@@ -25,8 +25,31 @@ SOFTWARE.
 #include "pico/cyw43_arch.h"
 #endif
 
+#ifdef PICO_DEFAULT_WS2812_PIN
+#include "ws2812.pio.h" // generated from ws2812.pio
+#endif
+
 int main()
 {
+// WS2812 on-board LED
+#ifdef PICO_DEFAULT_WS2812_PIN
+    const uint data_pin = PICO_DEFAULT_WS2812_PIN; // TX data pin index
+    const PIO pio_idx = pio0;                      // PIO instance
+    const int pio_sm = 0;                          // PIO state machine index
+
+    uint offset = pio_add_program(pio_idx, &ws2812_program);
+    // 1/800000Hz = 1.25us, which is the typical duration of a ws2812 bit signal
+    ws2812_program_init(pio_idx, pio_sm, offset, data_pin, 800000, false);
+
+    while (true)
+    {
+        pio_sm_put_blocking(pio_idx, pio_sm, 0x00ff0000);
+        sleep_ms(750);
+        pio_sm_put_blocking(pio_idx, pio_sm, 0x00000000);
+        sleep_ms(750);
+    }
+#else
+// Simple on-board LED
 #ifdef RASPBERRYPI_PICO_W
     if (cyw43_arch_init())
     {
@@ -51,5 +74,6 @@ int main()
         gpio_put(PICO_DEFAULT_LED_PIN, 0);
         sleep_ms(750);
     }
+#endif
 #endif
 }

@@ -26,10 +26,24 @@ SOFTWARE.
 #include "pico/cyw43_arch.h"
 #endif
 
+#ifdef PICO_DEFAULT_WS2812_PIN
+#include "ws2812.pio.h" // generated from ws2812.pio
+#endif
+
 int main()
 {
     const uint button_pin = 15;
 
+// WS2812 on-board LED
+#ifdef PICO_DEFAULT_WS2812_PIN
+    const uint data_pin = PICO_DEFAULT_WS2812_PIN; // TX data pin index
+    const PIO pio_idx = pio0;                      // PIO instance
+    const int pio_sm = 0;                          // PIO state machine index
+
+    uint offset = pio_add_program(pio_idx, &ws2812_program);
+    // 1/800000Hz = 1.25us, which is the typical duration of a ws2812 bit signal
+    ws2812_program_init(pio_idx, pio_sm, offset, data_pin, 800000, false);
+#else
 #ifdef RASPBERRYPI_PICO_W
     const uint led_pin = CYW43_WL_GPIO_LED_PIN;
 
@@ -40,12 +54,15 @@ int main()
 #else
     const uint led_pin = PICO_DEFAULT_LED_PIN;
 
-    // initialize gpio pins and set directions
-    gpio_init(button_pin);
-    gpio_set_dir(button_pin, GPIO_IN);
+    // initialize gpio led pin as OUTPUT
     gpio_init(led_pin);
     gpio_set_dir(led_pin, GPIO_OUT);
 #endif
+#endif
+
+    // initialize gpio button pin as INPUT
+    gpio_init(button_pin);
+    gpio_set_dir(button_pin, GPIO_IN);
 
     // initialize button debouncer
     debouncer button_deb;
@@ -75,10 +92,14 @@ int main()
             }
         }
 
+#ifdef PICO_DEFAULT_WS2812_PIN
+        pio_sm_put_blocking(pio_idx, pio_sm, led_on ? 0x00ff0000 : 0x00000000);
+#else
 #ifdef RASPBERRYPI_PICO_W
         cyw43_arch_gpio_put(led_pin, led_on);
 #else
         gpio_put(led_pin, led_on);
+#endif
 #endif
     }
 }

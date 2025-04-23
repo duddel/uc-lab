@@ -35,7 +35,7 @@ docker build -t uc-lab .
 _Optionally_, you can start a Docker container with an interactive shell to work in directly. But it is **recommended to skip this step** and use the simple build commands, described for each platform below.
 
 ```bash
-# Option 1: Use a container that deletes itself after usage (`--rm`)
+# Option 1: Use a container that deletes itself after usage (--rm)
 # Bash
 docker run --rm -it -v $(pwd):/code uc-lab
 
@@ -55,18 +55,18 @@ docker start -i uclab_01
 
 ## Raspberry Pi Pico Lab
 
--   The official SDK is cloned into the Docker image, see [Dockerfile](Dockerfile) for details
+-   The [official SDK](https://github.com/raspberrypi/pico-sdk) is cloned into the Docker image, see [Dockerfile](Dockerfile) for details
 -   Check out the examples in [rpico/src/](rpico/src/)
 -   Utilize existing code for an own project or start with a basic example
 -   Having Docker in place, the projects can be built with a single command
 
 ### Features
 
-| Feature  | Example                                                | Info                        | Tested on boards |
-| -------- | ------------------------------------------------------ | --------------------------- | ---------------- |
-| blink    | [rpico/src/main_blink.c](rpico/src/main_blink.c)       | Hello world blink example   | `pico`, `pico_w` |
-| debounce | [rpico/src/main_debounce.c](rpico/src/main_debounce.c) | Button debouncer            | `pico`, `pico_w` |
-| ws2812   | [rpico/src/main_ws2812.c](rpico/src/main_ws2812.c)     | Basic ws2812 light controls | `pico`, `pico_w` |
+| Feature  | Example                                                | Info                        | Tested on boards                          |
+| -------- | ------------------------------------------------------ | --------------------------- | ----------------------------------------- |
+| blink    | [rpico/src/main_blink.c](rpico/src/main_blink.c)       | Hello world blink example   | `pico`, `pico_w`, `waveshare_rp2350_zero` |
+| debounce | [rpico/src/main_debounce.c](rpico/src/main_debounce.c) | Button debouncer            | `pico`, `pico_w`, `waveshare_rp2350_zero` |
+| ws2812   | [rpico/src/main_ws2812.c](rpico/src/main_ws2812.c)     | Basic ws2812 light controls | `pico`, `pico_w`, `waveshare_rp2350_zero` |
 
 ### Build
 

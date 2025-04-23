@@ -10,7 +10,7 @@ jobs:
   build_pico:
     strategy:
       matrix:
-        pico_board: ["pico", "pico_w"]
+        pico_board: ["pico", "pico_w", "waveshare_rp2350_zero"]
     name: Build Pico
     runs-on: ubuntu-latest
     steps:
