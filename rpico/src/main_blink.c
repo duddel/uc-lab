@@ -31,6 +31,10 @@ SOFTWARE.
 
 int main()
 {
+    // Enable stdio via USB. Required for loading a program via picotool,
+    // but required for this program itself.
+    stdio_usb_init();
+
 // WS2812 on-board LED
 #if defined(PICO_DEFAULT_WS2812_PIN)
     const uint data_pin = PICO_DEFAULT_WS2812_PIN; // TX data pin index

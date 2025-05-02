@@ -59,6 +59,10 @@ void init_dimming(float exp, uint8_t shift)
 
 int main()
 {
+    // Enable stdio via USB. Required for loading a program via picotool,
+    // but required for this program itself.
+    stdio_usb_init();
+
     init_dimming(2.5f, 5);
 
     uint offset = pio_add_program(pio_idx, &ws2812_program);

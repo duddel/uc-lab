@@ -91,7 +91,31 @@ Optionally, append the name of a build traget to only build a single example.
 docker run --rm -v ${PWD}:/code uc-lab /bin/bash ./build.bash pico blink
 ```
 
-Now, drop any UF2 binary from `build_<pico_board>/` directory onto the Pico following the official documentation.
+### Load Program onto Device
+
+To load a program onto the Pico board, drop a UF2 binary from `build_<pico_board>/` directory to the removable drive, with the `BOOTSEL` button mechanism (or similar, for other boards).
+
+**Alternatively**, use `picotool` **[2]** to load a program without pressing the `BOOTSEL` button.
+
+For this to work, (1) enable `stdio` via `usb` in `CMakeLists.txt` for your target:
+
+```CMake
+pico_enable_stdio_usb(<YOUR_TARGET> 1)
+```
+
+And (2), call `stdio_usb_init()` (or `stdio_init_all()`) in your `main()`.
+
+With this program running on the Pico, `picotool` can put it into `BOOTSEL` mode (`-f` option) and load a program. Test the connection like so:
+
+```bash
+picotool info -f
+```
+
+Finally, load a program like so:
+
+```bash
+picotool load blink.uf2 -f
+```
 
 ### Advanced usage
 
@@ -193,3 +217,5 @@ avrdude -p attiny85 -P com3 -c stk500v1 -b 19200 -U lfuse:w:0xE2:m
 ## References
 
 **[1]** https://www.engbedded.com/fusecalc/
+
+**[2]** https://github.com/raspberrypi/pico-sdk-tools

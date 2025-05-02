@@ -40,6 +40,7 @@ if (PICO_CYW43_SUPPORTED)
   )
 endif()
 
+pico_enable_stdio_usb(blink 1)
 pico_add_extra_outputs(blink)
 
 
@@ -81,6 +82,7 @@ if (PICO_CYW43_SUPPORTED)
   )
 endif()
 
+pico_enable_stdio_usb(debounce 1)
 pico_add_extra_outputs(debounce)
 
 
@@ -100,6 +102,7 @@ target_link_libraries(ws2812
   hardware_pio
 )
 
+pico_enable_stdio_usb(ws2812 1)
 pico_add_extra_outputs(ws2812)
 
 
@@ -115,6 +118,4 @@ pico_add_extra_outputs(ws2812)
 # )
 
 # pico_enable_stdio_usb(serial 1)
-# pico_enable_stdio_uart(serial 0)
-
 # pico_add_extra_outputs(serial)
