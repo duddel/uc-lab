@@ -62,11 +62,12 @@ docker start -i uclab_01
 
 ### Features
 
-| Feature  | Example                                                | Info                        |
-| -------- | ------------------------------------------------------ | --------------------------- |
-| blink    | [rpico/src/main_blink.c](rpico/src/main_blink.c)       | Hello world blink example   |
-| debounce | [rpico/src/main_debounce.c](rpico/src/main_debounce.c) | Button debouncer            |
-| ws2812   | [rpico/src/main_ws2812.c](rpico/src/main_ws2812.c)     | Basic ws2812 light controls |
+| Feature  | Example                                                | Info                                                                                  |
+| -------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| blink    | [rpico/src/main_blink.c](rpico/src/main_blink.c)       | Hello world blink example                                                             |
+| debounce | [rpico/src/main_debounce.c](rpico/src/main_debounce.c) | Button debouncer                                                                      |
+| serial   | [rpico/src/main_serial.c](rpico/src/main_serial.c)     | Serial via USB. Connect from PC with [rpico/src/serial_pc.py](rpico/src/serial_pc.py) |
+| ws2812   | [rpico/src/main_ws2812.c](rpico/src/main_ws2812.c)     | Basic ws2812 light controls                                                           |
 
 All examples tested on boards: `pico`, `pico_w`, `pico2`, `pico2_w`, `waveshare_rp2350_zero`
 
