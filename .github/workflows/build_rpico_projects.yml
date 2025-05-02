@@ -19,4 +19,4 @@ jobs:
       - name: Build Docker image
         run: docker build -t uc-lab .
       - name: Build project
-        run: cd rpico/projects/${{ pico_project }} && ./build.bash
+        run: cd rpico/projects/${{ matrix.pico_project }} && ./build.bash

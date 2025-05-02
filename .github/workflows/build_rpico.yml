@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - "rpico/"
+      - "!rpico/projects/"
       - ".github/workflows/build_rpico.yml"
       - "Dockerfile"
 
