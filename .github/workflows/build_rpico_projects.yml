@@ -1,0 +1,22 @@
+name: build rpico projects
+on:
+  push:
+    paths:
+      - "rpico/"
+      - ".github/workflows/build_rpico_projects.yml"
+      - "Dockerfile"
+
+jobs:
+  build_project:
+    strategy:
+      matrix:
+        pico_project: ["PCMoodlight"]
+    name: Build Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t uc-lab .
+      - name: Build project
+        run: cd rpico/projects/${{ pico_project }} && ./build.bash
