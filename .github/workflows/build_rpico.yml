@@ -2,7 +2,7 @@ name: build rpico
 on:
   push:
     paths:
-      - "avr/"
+      - "rpico/"
       - ".github/workflows/build_rpico.yml"
       - "Dockerfile"
 
