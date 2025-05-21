@@ -22,23 +22,27 @@ SOFTWARE.
 #include "timemeas.h"
 #include "choreo.h"
 
-void choreo_init(choreo *cho, uint8_t loop, uint8_t (*func)(uint8_t step_old, uint32_t time))
+void choreo_init(choreo *cho,
+                 uint8_t loop,
+                 const void *data,
+                 uint8_t (*func)(uint8_t step_old, uint32_t time, const void *data))
 {
     cho->start_time = 0;
     cho->step = CHOREO_IDLE;
     cho->loop = loop;
+    cho->data = data;
     cho->func = func;
 }
 
 void choreo_start(choreo *cho)
 {
     cho->start_time = timemeas_now();
-    cho->step = cho->func(CHOREO_IDLE, 0);
+    cho->step = cho->func(CHOREO_IDLE, 0, cho->data);
 }
 
 void choreo_tick(choreo *cho)
 {
-    cho->step = cho->func(cho->step, timemeas_now() - cho->start_time);
+    cho->step = cho->func(cho->step, timemeas_now() - cho->start_time, cho->data);
 
     if (cho->step == CHOREO_IDLE && cho->loop)
     {
@@ -48,5 +52,5 @@ void choreo_tick(choreo *cho)
 
 void choreo_stop(choreo *cho)
 {
-    cho->step = cho->func(CHOREO_RESET, 0);
+    cho->step = cho->func(CHOREO_RESET, 0, cho->data);
 }

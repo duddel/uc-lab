@@ -26,7 +26,7 @@ SOFTWARE.
 #include "../choreo.h"
 #include "../debounce.h"
 
-uint8_t choreo_func_blink(uint8_t step_old, uint32_t time)
+uint8_t choreo_func_blink(uint8_t step_old, uint32_t time, const void *data)
 {
     // Reset requested: Go to idle state
     if (step_old == CHOREO_RESET)
@@ -57,7 +57,7 @@ uint8_t choreo_func_blink(uint8_t step_old, uint32_t time)
     }
 }
 
-uint8_t choreo_func_morse(uint8_t step_old, uint32_t time)
+uint8_t choreo_func_morse(uint8_t step_old, uint32_t time, const void *data)
 {
     // ['t', 'i', 'n', 'y'] (waste of memory)
     static const uint8_t signal[] = {1, 1, 1, 0, 0, 0,
@@ -110,9 +110,9 @@ int main(void)
     sei();
 
     // Init blink choreo: loop=1
-    choreo_init(&choreo_blink, 1, choreo_func_blink);
+    choreo_init(&choreo_blink, 1, 0, choreo_func_blink);
     // Init Morse choreo: perform once (loop=0)
-    choreo_init(&choreo_morse, 0, choreo_func_morse);
+    choreo_init(&choreo_morse, 0, 0, choreo_func_morse);
 
     // PB1, PB2: out
     DDRB |= (1 << DDB1) | (1 << DDB2);
