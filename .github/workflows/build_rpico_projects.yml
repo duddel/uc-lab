@@ -10,7 +10,7 @@ jobs:
   build_project:
     strategy:
       matrix:
-        pico_project: ["PCMoodlight"]
+        pico_project: ["Gamelight"]
     name: Build Project
     runs-on: ubuntu-latest
     steps:

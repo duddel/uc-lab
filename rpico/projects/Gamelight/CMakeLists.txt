@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 # note: this must happen before project()
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
-project(moodlight)
+project(gamelight)
 pico_sdk_init()
 
 # Root of the Pico Lab in this repository (to use shared code)

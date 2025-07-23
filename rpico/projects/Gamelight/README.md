@@ -1,4 +1,4 @@
-# PC Moodlight
+# Gamelight
 
 -   This is a moodlight, connected to your PC
 -   It can probably go inside your PC case
