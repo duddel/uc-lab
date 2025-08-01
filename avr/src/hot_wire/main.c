@@ -30,7 +30,7 @@ SOFTWARE.
 
 // Config
 #define NUM_LED 10
-#define TIME_UNTIL_SLEEP 30000 // [ms]
+#define TIME_UNTIL_SLEEP 90000 // [ms] Go to sleep mode if no input for TIME_UNTIL_SLEEP ms
 
 // Stages
 #define STATE_IDLE 1
@@ -144,35 +144,33 @@ uint8_t choreo_func_start_light(uint8_t step_old, uint32_t time, const void *dat
     }
 
     // Increment step by time
-    uint8_t step = (uint8_t)(time >> 8);
+    // this will loop the choreo forever (% NUM_LED)
+    uint8_t step = (uint8_t)(time >> 6) % NUM_LED;
     if (step == step_old)
     {
         return step;
     }
 
-    // Handle step increment
-    switch (step)
+    uint8_t pos = NUM_LED - 1 - step;
+
+    // Bit-Banging. No fancy calculations in this loop!
+    for (uint8_t i = 0; i < NUM_LED; i++)
     {
-    case 0:
-        for (uint8_t i = 0; i < NUM_LED; i++)
+        if (i == pos)
         {
             ws2812b_bang_byte(PB3, 0);
-            ws2812b_bang_byte(PB3, 0);
-            ws2812b_bang_byte(PB3, 24);
+            ws2812b_bang_byte(PB3, 255);
+            ws2812b_bang_byte(PB3, 255);
         }
-        return step;
-    case 1:
-        for (uint8_t i = 0; i < NUM_LED; i++)
+        else
         {
             ws2812b_bang_byte(PB3, 0);
             ws2812b_bang_byte(PB3, 0);
             ws2812b_bang_byte(PB3, 0);
         }
-        return step;
-    case 2:
-    default:
-        return CHOREO_IDLE; // finish choreo
     }
+
+    return step;
 }
 
 uint8_t choreo_func_success_light(uint8_t step_old, uint32_t time, const void *data)
@@ -183,7 +181,7 @@ uint8_t choreo_func_success_light(uint8_t step_old, uint32_t time, const void *d
         {25, 63, 0}, // Orange
         {0, 63, 0},  // Red
         {0, 22, 22}, // Pink
-        {16, 0, 39}, // Blue
+        {16, 0, 39}  // Blue
     };
 
     const uint8_t sequence[] = {0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
@@ -202,8 +200,8 @@ uint8_t choreo_func_success_light(uint8_t step_old, uint32_t time, const void *d
     }
 
     // Increment step by time
-    //   this will loop the choreo forever (% NUM_LED)
-    uint8_t step = (uint8_t)(time >> 6) % NUM_LED;
+    // this will loop the choreo forever (% NUM_LED)
+    uint8_t step = (uint8_t)(time >> 7) % NUM_LED;
     if (step == step_old)
     {
         return step;
@@ -316,7 +314,7 @@ void tick_all_choreos(void)
 
 void stop_all_choreos(void)
 {
-    // ToDo: change choreo_stop() to only call the choreo function with CHOREO_RESET if it is not stopped already 
+    // ToDo: change choreo_stop() to only call the choreo function with CHOREO_RESET if it is not stopped already
     choreo_stop(&choreo_light_start);
     _delay_ms(2);
     choreo_stop(&choreo_light_lost);
